@@ -30,7 +30,7 @@ jobs:
       - name: Package Binary
         run: |
           cd target/release
-          tar -czvf ../../google-calendar-tui-linux-x86_64.tar.gz rust-calendar-tui
+          tar -czvf ../../google-calendar-tui-linux-x86_64.tar.gz rust_tui_calendar 
           cd ../..
 
       - name: Create GitHub Release
