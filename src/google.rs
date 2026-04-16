@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use chrono::{DateTime, Utc};
+use rayon::prelude::*;
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct CalendarEntry {
@@ -46,6 +47,15 @@ pub fn fetch_calendar_list(token: &str) -> Vec<CalendarEntry> {
         return serde_json::from_value(json["items"].clone()).unwrap_or_default();
     }
     vec![]
+}
+
+pub fn fetch_events_parallel(token: &str, ids: Vec<String>) -> Vec<(String, Vec<CalendarEvent>)> {
+    ids.into_par_iter()
+        .map(|id| {
+            let events = fetch_events_for(token, &id);
+            (id, events)
+        })
+        .collect()
 }
 
 pub fn fetch_events_for(token: &str, calendar_id: &str) -> Vec<CalendarEvent> {

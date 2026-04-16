@@ -1,10 +1,11 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
 use crate::google::{CalendarEntry, CalendarEvent};
 
 pub struct App {
     pub all_calendars: Vec<CalendarEntry>,
     pub active_calendar_ids: HashSet<String>,
-    pub calendar_events: Vec<CalendarEvent>,
+    // Der Cache speichert die Events pro Kalender-ID
+    pub cache: HashMap<String, Vec<CalendarEvent>>,
     pub show_selection: bool,
     pub cursor: usize,
 }
@@ -14,17 +15,18 @@ impl App {
         Self {
             all_calendars: Vec::new(),
             active_calendar_ids: HashSet::new(),
-            calendar_events: Vec::new(),
+            cache: HashMap::new(),
             show_selection: false,
             cursor: 0,
         }
     }
 
-    pub fn toggle_calendar(&mut self, id: String) {
-        if self.active_calendar_ids.contains(&id) {
-            self.active_calendar_ids.remove(&id);
-        } else {
-            self.active_calendar_ids.insert(id);
-        }
+    // Das ist die Funktion, die in ui.rs gesucht wird:
+    pub fn get_visible_events(&self) -> Vec<&CalendarEvent> {
+        self.active_calendar_ids
+            .iter()
+            .filter_map(|id| self.cache.get(id))
+            .flatten()
+            .collect()
     }
 }

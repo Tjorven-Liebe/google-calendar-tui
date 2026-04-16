@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::process::Command;
+use reqwest::Url;
 use tiny_http::{Server, Response};
-use url::Url;
 
 #[derive(Serialize, Deserialize, Default, Clone)]
 pub struct Config {
