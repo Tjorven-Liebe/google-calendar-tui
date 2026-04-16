@@ -27,9 +27,17 @@ jobs:
       - name: Build Release Binary
         run: cargo build --release --locked
 
+      # ... (Schritte nach dem Build)
+
+      - name: Publish to Crates.io
+        run: cargo publish --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
+
       - name: Package Binary
         run: |
           cd target/release
+          # Nutze hier den exakten Namen deiner Binary aus der Cargo.toml
           tar -czvf ../../google-calendar-tui-linux-x86_64.tar.gz rust_tui_calendar 
           cd ../..
 
@@ -37,13 +45,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: google-calendar-tui-linux-x86_64.tar.gz
-          body_path: CHANGELOG.md # Optional, falls vorhanden
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to Crates.io
-        run: cargo publish
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
