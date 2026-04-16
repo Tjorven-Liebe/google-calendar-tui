@@ -1,7 +1,13 @@
 [package]
-name = "rust_tui_calendar"
-version = "0.1.0"
+name = "rust_tui_calendar" # Muss eindeutig auf crates.io sein
+version = "0.1.1"
 edition = "2021"
+authors = ["Tjorven Liebe <tjorvenliebe@gmail.com>"]
+description = "A terminal-based Google Calendar viewer written in Rust."
+license = "MIT" # Oder "GPL-3.0" etc.
+repository = "https://github.com/dein-user/google-calendar-tui"
+homepage = "https://github.com/dein-user/google-calendar-tui"
+readme = "README.md"
 
 [dependencies]
 ratatui = "0.26"
